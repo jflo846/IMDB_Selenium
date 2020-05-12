@@ -15,3 +15,7 @@ Feature: Movie Geek
     When I press the Top rated movies 
     Then I should get a list of the top 250 movies 
     And The "Nyckeln till frihet" should be number one
+
+  Scenario: Finding upcoming releases on DVD
+    When I press DVD & Blu-ray Releases  
+    Then I should get a list of upcoming releases that I can watch during this corona pandemic
