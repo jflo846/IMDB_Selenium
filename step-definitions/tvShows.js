@@ -5,7 +5,7 @@ module.exports = function () {
   let sleepTime = 3000;
 
   this.Given(/^that I click the 'Most popular shows' link in the menu$/, async function () {
-    let link = await driver.findElement(by.linkText('Most Popular Shows'));
+    let link = await driver.findElement(by.partialLinkText('Most Popular Shows'));
     await link.click();
     await sleep(sleepTime);
   });
