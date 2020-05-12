@@ -10,4 +10,4 @@ And I have pressed the menu-button to extend all links to the site
   Scenario:I want to know who the most popular celebs are
     When I have clicked the 'Most popular celebs' link in the menu
     Then I shall se a list of the most popular celebs on IMDB
-    And Chris Hemsworth should be among top 15
+    And since I love Chris Hemsworth I want to make sure he is on the list
