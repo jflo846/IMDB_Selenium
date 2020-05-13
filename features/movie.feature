@@ -12,10 +12,18 @@ Feature: Movie Geek
     And the list should be empty because the theaters are closed
 
   Scenario: Finding top movies
-    When I press the Top rated movies 
-    Then I should get a list of the top 250 movies 
+    When I press the Top rated movies
+    Then I should get a list of the top 250 movies
     And The "Nyckeln till frihet" should be number one
 
   Scenario: Finding upcoming releases on DVD
-    When I press DVD & Blu-ray Releases  
+    When I press DVD & Blu-ray Releases
     Then I should get a list of upcoming releases that I can watch during this corona pandemic
+
+  Scenario: Worst movies on IMDB
+    When I press the 'Most popular movies' link
+    And click on the 'Lowest Rated Movies' to the right
+    Then I should get a list of the worst 100 movies
+    And The Room with Tommy Wiseau should be on the list
+
+
