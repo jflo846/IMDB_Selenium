@@ -10,13 +10,13 @@ module.exports = function() {
     await sleep(sleepTime);
     let comingSoon=await driver.findElement(by.linkText('Coming Soon'));
     await comingSoon.click();
-    expect(comingSoon, 'Could not find the link Coming Soon')
+    expect(comingSoon, 'Could not find the link Coming Soon');
   });
 
   this.Then(/^I should get a list of upcoming releases$/, async function () {      
     await driver.wait(until.elementLocated(by.css('.thebuzz', 'img.poster.shadowed')));   
     thebuzz=await $('.thebuzz');
-    posterShadowed=await $('img.poster.shadowed')
+    posterShadowed = await $('img.poster.shadowed');
   });
 
   this.Then(/^the list should be empty because the theaters are closed$/, function () {   
@@ -29,7 +29,7 @@ module.exports = function() {
     await sleep(sleepTime);
     let topRated=await driver.findElement(by.linkText('Top Rated Movies'));
     await topRated.click();
-    expect(topRated, 'Could not find the link Top Rated Movies')
+    expect(topRated, 'Could not find the link Top Rated Movies');
   });
 
 
