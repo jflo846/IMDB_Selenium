@@ -11,3 +11,15 @@ Feature: TV-shows
     When I choose to sort by IMDB rating
     Then I should be able to se the 100 most popular tv shows
     And I expect "Game of Thrones" to be one of them
+
+  Scenario: Old shows
+    Given that I click the 'Top Rated Shows' link in the menu
+    When I choose to sort by release date by descending order
+    Then I should see the oldest tv-show as nr 1 on the list
+    And the raiting should not be in any order
+
+  Scenario: Pick show by genre
+    Given that I click the 'Browse TV Shows by Genre' link in the menu
+    When I scroll down the page to the section 'Popular TV Shows by Genre'
+    And choose 'western' for tv-shows I want to see
+    Then I should se a list of the most popular western tv-shows
