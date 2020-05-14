@@ -5,6 +5,8 @@ module.exports = function() {
   let thebuzz;
   let posterShadowed;
   let topRatedNodeList;
+  let list = [];
+  let movieTitle = [];
 
   this.When(/^I press Coming Soon$/, async function () {
     let comingSoon = await driver.wait(until.elementLocated(By.linkText('Coming Soon')));
@@ -30,9 +32,7 @@ module.exports = function() {
     expect(topRated, 'Could not find the link Top Rated Movies');
   });
 
-
   this.Then(/^I should get a list of the top (\d+) movies$/, async function (amountTopRated) {
-
     topRatedNodeList = await $('.titleColumn');
     let topratedLength = [...topRatedNodeList].length;
     expect(topratedLength).to.equal(+amountTopRated,
@@ -48,12 +48,10 @@ module.exports = function() {
   });
 
   this.When(/^I press DVD & Blu-ray Releases$/, async function () {
-  
     let relesesDVD = await driver.wait(until.elementLocated(By.linkText('DVD & Blu-ray Releases')));
     await relesesDVD.click();
     expect(relesesDVD, 'Could not find the link DVD & Blu-ray Releases').to.exist;
     await sleep(sleepTime);
-
   });
 
   this.Then(/^I should get a list of upcoming releases that I can watch during this corona pandemic$/, async function () {
@@ -62,32 +60,53 @@ module.exports = function() {
     expect(nodeDvdList, 'Could not find a list of DVD & Blu-ray Releases').to.exist;
   });
 
-
   this.When(/^I press the 'Most popular movies' link$/, async function () {
-    
     let mostPopularMovies = await driver.wait(until.elementLocated(By.linkText('Most Popular Movies')));
     await mostPopularMovies.click();
     expect(mostPopularMovies, 'Could not find the link Coming Soon');
   });
 
-
-  this.When(/^click on the 'Lowest Rated Movies' to the right$/,async function () {
+  this.When(/^click on the 'Lowest Rated Movies' to the right$/, async function () {
     let lowestRated = await driver.findElement(by.linkText('Lowest Rated Movies'));
     await lowestRated.click();
+    expect(lowestRated).to.exist;
   });
 
-  this.Then(/^I should get a list of the worst (\d+) movies$/,async function (numberOfMovies) {
-    
-    let totalNumber = await driver.findElement(by.css('.desc > span:nth-child(1)')).getText('100');
+  this.Then(/^I should get a list of the worst (\d+) movies$/, async function (numberOfMovies) {
+    let totalNumber = await driver.findElement(by.css('.desc > span:nth-child(1)')).getText();
     expect(totalNumber).to.equal(numberOfMovies, 'theres not the correct number of movies here');
-    await sleep(sleepTime);
   });
 
   this.Then(/^The Room with Tommy Wiseau should be on the list$/, async function () {
-    await sleep(1000); //måste ha sleep här för att det ska fungera, vet inte vad som är fel. 
     let isThisTheWorstMovieEver = await driver.findElement(By.linkText('The Room')).getText();
-    expect(isThisTheWorstMovieEver).to.equal('The Room');
+    expect(isThisTheWorstMovieEver).to.equal('The Room', 'The Rooms is not on the list');
   });
+
+  this.Given(/^that I am on the 'Most Popular movies' page$/, async function () {
+    await helpers.loadPage('https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm');
+  });
+  this.When(/^I click on 'Fantasy' beneath 'Popular Movies by Genre'$/, async function () {
+    let fantasy = await driver.wait(until.elementLocated(By.linkText('Fantasy')));
+    await fantasy.click();
+  });
+  this.When(/^klick on 'Feature films' Beneath 'Title Type'$/, async function () {
+    let feature = await driver.wait(until.elementLocated(By.linkText('Feature Films')));
+    await feature.click();
+  });
+
+  this.Then(/^'Star Wars: The Rise of Skywalker' should be in the top (\d+)$/,async function (top) {
+    
+    list = await $('.lister-item-header > a');
+    let topTen = list.slice(0, 10);
+    expect(topTen.length).to.equal(+top, 'This is not a list of the top ten movies');
+    
+    for (let movie of topTen) {
+      movieTitle.push(await movie.getText());
+    }
+    expect(movieTitle).to.include('Star Wars: Episode IX - The Rise of Skywalker', 'The movie is not on the top ten list');
+  });
+
+
 }
 
 

@@ -26,4 +26,9 @@ Feature: Movie Geek
     Then I should get a list of the worst 100 movies
     And The Room with Tommy Wiseau should be on the list
 
+  Scenario: Best fantasy Movie
+    Given that I am on the 'Most Popular movies' page
+    When I click on 'Fantasy' beneath 'Popular Movies by Genre'
+    And klick on 'Feature films' Beneath 'Title Type'
+    Then 'Star Wars: The Rise of Skywalker' should be in the top 10
 
