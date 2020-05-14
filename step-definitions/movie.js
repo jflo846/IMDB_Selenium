@@ -60,8 +60,6 @@ module.exports = function() {
     expect(nodeDvdList, 'Could not find a list of DVD & Blu-ray Releases').to.exist;
   });
 
-
-
   this.When(/^I press the 'Most popular movies' link$/, async function () {
     let mostPopularMovies = await driver.wait(until.elementLocated(By.linkText('Most Popular Movies')));
     await mostPopularMovies.click();
@@ -80,7 +78,6 @@ module.exports = function() {
   });
 
   this.Then(/^The Room with Tommy Wiseau should be on the list$/, async function () {
-    //måste ha sleep här för att det ska fungera, vet inte vad som är fel.
     let isThisTheWorstMovieEver = await driver.findElement(By.linkText('The Room')).getText();
     expect(isThisTheWorstMovieEver).to.equal('The Room', 'The Rooms is not on the list');
   });
