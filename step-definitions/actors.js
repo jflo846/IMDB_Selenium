@@ -18,9 +18,8 @@ module.exports = function () {
   });
 
   this.When(/^I have clicked the 'Most popular celebs' link in the menu$/, async function () {
-    let link = await driver.findElement(by.linkText('Most Popular Celebs'));
+    let link = await driver.wait(until.elementLocated(By.linkText('Most Popular Celebs')));
     await link.click();
-    await sleep(sleepTime);
 
   });
 

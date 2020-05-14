@@ -7,8 +7,7 @@ module.exports = function() {
   let topRatedNodeList;
 
   this.When(/^I press Coming Soon$/, async function () {
-    await sleep(sleepTime);
-    let comingSoon = await driver.findElement(by.linkText('Coming Soon'));
+    let comingSoon = await driver.wait(until.elementLocated(By.linkText('Coming Soon')));
     await comingSoon.click();
     expect(comingSoon, 'Could not find the link Coming Soon');
   });
@@ -26,15 +25,14 @@ module.exports = function() {
   });
 
   this.When(/^I press the Top rated movies$/, async function () {
-    await sleep(sleepTime);
-    let topRated = await driver.findElement(by.linkText('Top Rated Movies'));
+    let topRated = await await driver.wait(until.elementLocated(By.linkText('Top Rated Movies')));
     await topRated.click();
     expect(topRated, 'Could not find the link Top Rated Movies');
   });
 
 
   this.Then(/^I should get a list of the top (\d+) movies$/, async function (amountTopRated) {
-    await sleep(sleepTime);
+
     topRatedNodeList = await $('.titleColumn');
     let topratedLength = [...topRatedNodeList].length;
     expect(topratedLength).to.equal(+amountTopRated,
@@ -43,7 +41,6 @@ module.exports = function() {
 
   this.Then(/^The "([^"]*)" should be number one$/, async function (expectedNbrOne) {
     //TODO Behöver få ordning på firefox så den kör engelska jämt, av något skäl byter den tillbaks till svenska
-    await sleep(sleepTime);
     let toFind = topRatedNodeList[0]
     let movieTitle = await toFind.getText();
     expect(movieTitle).to.include(expectedNbrOne,
@@ -51,8 +48,8 @@ module.exports = function() {
   });
 
   this.When(/^I press DVD & Blu-ray Releases$/, async function () {
-    await sleep(sleepTime);
-    let relesesDVD = await driver.findElement(by.linkText('DVD & Blu-ray Releases'));
+  
+    let relesesDVD = await driver.wait(until.elementLocated(By.linkText('DVD & Blu-ray Releases')));
     await relesesDVD.click();
     expect(relesesDVD, 'Could not find the link DVD & Blu-ray Releases').to.exist;
     await sleep(sleepTime);
@@ -67,8 +64,8 @@ module.exports = function() {
 
 
   this.When(/^I press the 'Most popular movies' link$/, async function () {
-    await sleep(sleepTime);
-    let mostPopularMovies = await driver.findElement(by.linkText('Most Popular Movies'));
+    
+    let mostPopularMovies = await driver.wait(until.elementLocated(By.linkText('Most Popular Movies')));
     await mostPopularMovies.click();
     expect(mostPopularMovies, 'Could not find the link Coming Soon');
   });
@@ -86,10 +83,10 @@ module.exports = function() {
     await sleep(sleepTime);
   });
 
-  this.Then(/^The Room with Tommy Wiseau should be on the list$/,async function () {
+  this.Then(/^The Room with Tommy Wiseau should be on the list$/, async function () {
+    await sleep(1000); //måste ha sleep här för att det ska fungera, vet inte vad som är fel. 
     let isThisTheWorstMovieEver = await driver.findElement(By.linkText('The Room')).getText();
     expect(isThisTheWorstMovieEver).to.equal('The Room');
-
   });
 }
 
