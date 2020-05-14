@@ -15,11 +15,11 @@ Feature: TV-shows
   Scenario: Old shows
     Given that I click the 'Top Rated Shows' link in the menu
     When I choose to sort by release date by descending order
-    Then I should see the oldest tv-show as nr 1 on the list
-    And the raiting should not be in any order
+    Then I should see the oldest tv-show "Alfred Hitchcock Presents" on the list
 
   Scenario: Pick show by genre
     Given that I click the 'Browse TV Shows by Genre' link in the menu
     When I scroll down the page to the section 'Popular TV Shows by Genre'
-    And choose 'western' for tv-shows I want to see
-    Then I should se a list of the most popular western tv-shows
+    And choose 'Talk Show' for tv-shows I want to see
+    Then I should se a list of the most popular talk shows
+    And that "A Little Late with Lilly Singh" is one of them

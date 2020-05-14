@@ -48,36 +48,25 @@ module.exports = function () {
     descendingOrder.click();
   });
 
-  this.Then(/^I should see the oldest tv\-show as nr (\d+) on the list$/, async function (numberOne) {
-    numberOne = +numberOne;
+  this.Then(/^I should see the oldest tv\-show "([^"]*)" on the list$/, async function (numberOne) {
     await driver.wait(until.elementLocated(By.css('.secondaryInfo')));
-    //let oldestShows = await $('.secondaryInfo');
-    //let yearOfOldestShows = oldestShows.getText();
-    //let yearOfOldestShows = [...oldestShows].length;
-    let meh = await driver.findElements(By.css(".titleColumn > span"));
 
-    //console.log(meh)
-    //expect().to.be.below();
-    /*
+    let firstElement = await driver.findElement(By.css(".titleColumn")).getText();
+    expect(firstElement).to.include(numberOne);
+    let elements = await driver.findElements(By.css(".titleColumn > span"));
+    let years = [];
+    for (let element of elements) {
+      // getting the year part using splits on parenthesis
+      // and converting to number using +
+      years.push(+(await element.getText()).split('(')[1].split(')')[0]);
+    }
+    // we expect no year to be less than the first year
+    let wrongYears = years.filter(x => x < years[0]);
+    expect(wrongYears,
+      'Years before ' + years[0] + ' found later in list.'
+    ).to.be.empty;
 
-   
-    topRatedNodeList=await $('.titleColumn');
-    let topratedLength=[...topRatedNodeList].length;
-    expect(topratedLength).to.equal(+amountTopRated,
-      'Wrong amount of top rated movies');
-   
-    let toFind=topRatedNodeList[0]
-    let movieTitle= await toFind.getText();
-    expect(movieTitle).to.include(expectedNbrOne,
-      'Wrong title as number one.');
-    */
   });
-
-  this.Then(/^the raiting should not be in any order$/, async function () {
-    //.ratingColumn imdbRating 
-    //<strong></strong>
-  });
-
 
   this.Given(/^that I click the 'Browse TV Shows by Genre' link in the menu$/, async function () {
     let link = await driver.findElement(by.partialLinkText('Browse TV Shows by Genre'));
@@ -89,14 +78,23 @@ module.exports = function () {
     //Gets done in the next step
   });
 
-  this.When(/^choose 'western' for tv\-shows I want to see$/, async function () {
-    let link = await driver.findElement(by.partialLinkText('Popular TV Shows by Genre'));
+  this.When(/^choose 'Talk Show' for tv\-shows I want to see$/, async function () {
+    let link = await driver.findElement(by.partialLinkText('Talk Show'));
     await link.click();
     await sleep(sleepTime);
   });
 
-  this.Then(/^I should se a list of the most popular western tv\-shows$/, async function () {
+  this.Then(/^I should se a list of the most popular talk shows$/, async function () {
+    //Nothing to test here
+  });
 
+
+  this.Then(/^that "([^"]*)" is one of them$/, async function (talkShow) {
+    /*await driver.wait(until.elementLocated(By.css('.lister-item-content')));
+    let popularTalkShows = await $('.lister-item-content');
+    let popularTalkShowText = popularTalkShows.getText();
+    expect(popularTalkShowText).to.include(talkShow);
+    await sleep(sleepTime);*/
   });
 
 }
