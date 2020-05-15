@@ -82,18 +82,26 @@ module.exports = function() {
     expect(isThisTheWorstMovieEver).to.equal('The Room', 'The Rooms is not on the list');
   });
 
-   //TODO Jennie lägger till div expect i detta step. Tex en expect om att popular movies ska innehålla Fantasy
+   
   this.Given(/^that I am on the 'Most Popular movies' page$/, async function () {
     await helpers.loadPage('https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm');
   });
 
   this.When(/^I click on 'Fantasy' beneath 'Popular Movies by Genre'$/, async function () {
+    let links = [];
+    links = await $('.quicklinks');
+    let linkName= await links.getText();
     let fantasy = await driver.wait(until.elementLocated(By.linkText('Fantasy'))); 
+    expect(linkName,'This is not the correct link').to.include('Fantasy');
     await fantasy.click();
   });
 
   this.When(/^klick on 'Feature films' Beneath 'Title Type'$/, async function () {
+    let links = [];
+    links = await $('div.aux-content-widget-2:nth-child(5) > table:nth-child(2) > tbody:nth-child(2) > tr:nth-child(2)');
+    let linkText = await links.getText();
     let feature = await driver.wait(until.elementLocated(By.linkText('Feature Films')));
+    expect(linkText,'The correct link is not here').to.include('Feature Films');
     await feature.click();
   });
 
