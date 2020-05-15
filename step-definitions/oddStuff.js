@@ -11,12 +11,10 @@ let searchText;
   });
 
   this.Given(/^use arrow to getdown two steps and select the suggestion Independent Spirit Awards with enter$/, async function () {
-    //TODO lägga till kontroll så man verkligen väljer rätt länk... den varierar om den är på första eller andraplats
     await driver.wait(until.elementLocated(by.css('div[aria-expanded="true"]')));
     let searchReady = await driver.findElement(by.css('input[name="q"]'));
     expect(searchReady).to.exist;   
     await searchReady.sendKeys(selenium.Key.ARROW_DOWN);
-    //await searchReady.sendKeys(selenium.Key.ARROW_DOWN);
     await searchReady.sendKeys(selenium.Key.ENTER);
   });
 
