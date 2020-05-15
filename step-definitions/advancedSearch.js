@@ -12,7 +12,7 @@ module.exports = function () {
   });
 
   this.Given(/^that I choose 'Advanced Search' in the searchbar drop \- down menu$/, async function () {
-    let advancedButton = await driver.findElement(By.linkText('Advanced Search'));
+    let advancedButton = await driver.wait(until.elementLocated(By.linkText('Advanced Search')));
     await advancedButton.click();
     await sleep(sleepTime);
   });
