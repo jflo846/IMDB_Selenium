@@ -82,20 +82,22 @@ module.exports = function() {
     expect(isThisTheWorstMovieEver).to.equal('The Room', 'The Rooms is not on the list');
   });
 
+   //TODO Jennie lägger till div expect i detta step. Tex en expect om att popular movies ska innehålla Fantasy
   this.Given(/^that I am on the 'Most Popular movies' page$/, async function () {
     await helpers.loadPage('https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm');
   });
+
   this.When(/^I click on 'Fantasy' beneath 'Popular Movies by Genre'$/, async function () {
-    let fantasy = await driver.wait(until.elementLocated(By.linkText('Fantasy')));
+    let fantasy = await driver.wait(until.elementLocated(By.linkText('Fantasy'))); 
     await fantasy.click();
   });
+
   this.When(/^klick on 'Feature films' Beneath 'Title Type'$/, async function () {
     let feature = await driver.wait(until.elementLocated(By.linkText('Feature Films')));
     await feature.click();
   });
 
-  this.Then(/^'Star Wars: The Rise of Skywalker' should be in the top (\d+)$/,async function (top) {
-    
+  this.Then(/^'Star Wars: The Rise of Skywalker' should be in the top (\d+)$/,async function (top) {  
     list = await $('.lister-item-header > a');
     let topTen = list.slice(0, 10);
     expect(topTen.length).to.equal(+top, 'This is not a list of the top ten movies');
@@ -105,7 +107,6 @@ module.exports = function() {
     }
     expect(movieTitle).to.include('Star Wars: Episode IX - The Rise of Skywalker', 'The movie is not on the top ten list');
   });
-
 
 }
 
