@@ -43,16 +43,16 @@ module.exports = function () {
 
   this.When(/^I enter my email$/, async function () {
     await driver.wait(until.elementLocated(By.css('.a-section')));
-    searchText = await $('input[type= "email"]');
-    expect(searchText, 'The correct input field did not exist').to.exist;
-    searchText.sendKeys(username);
+    let inputEmail = await $('input[type= "email"]');
+    expect(inputEmail, 'The correct input field did not exist').to.exist;
+    inputEmail.sendKeys(username);
     await sleep(sleepTime);
   });
 
   this.When(/^I enter my password$/, async function () {
-    searchText = await $('input[type= "password"]');
-    expect(searchText, 'The correct input field did not exist').to.exist;
-    searchText.sendKeys(password);
+    let inputPassword = await $('input[type= "password"]');
+    expect(inputPassword, 'The correct input field did not exist').to.exist;
+    inputPassword.sendKeys(password);
     await sleep(sleepTime);
   });
 
@@ -70,7 +70,6 @@ module.exports = function () {
       let buttonText = await changedButton.getText();
       if (buttonText.includes("Testing")) {
         expect(changedButton, 'Correct button did not exist').to.exist
-        await changedButton.click();
         break;
       }
     }
