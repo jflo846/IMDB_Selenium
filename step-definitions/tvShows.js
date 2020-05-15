@@ -32,7 +32,7 @@ module.exports = function () {
     await driver.wait(until.elementLocated(By.css('.lister')));
     let popularShows = await $('.lister')
     let popularShowsText = await popularShows.getText();
-    expect(popularShowsText).to.include(gameOfThrones)
+    expect(popularShowsText).to.include(gameOfThrones, 'Correct show was not included')
   });
 
   this.Given(/^that I click the 'Top Rated Shows' link in the menu$/, async function () {
@@ -56,7 +56,7 @@ module.exports = function () {
     await driver.wait(until.elementLocated(By.css('.secondaryInfo')));
 
     let firstElement = await driver.findElement(By.css(".titleColumn")).getText();
-    expect(firstElement).to.include(numberOne);
+    expect(firstElement, 'Correct show was not displayed').to.include(numberOne);
     let elements = await driver.findElements(By.css(".titleColumn > span"));
     let years = [];
     for (let element of elements) {
@@ -97,7 +97,7 @@ module.exports = function () {
   this.Then(/^that "([^"]*)" is one of them$/, async function (talkShow) {
     await driver.wait(until.elementLocated(By.css('.lister-list')));
     let specificShow = await driver.findElement(by.partialLinkText(talkShow));
-    expect(specificShow).to.exist;
+    expect(specificShow, 'Correct show did not exist. Expected: ' + specificShow).to.exist;
     await sleep(sleepTime);
   });
 
@@ -111,7 +111,7 @@ module.exports = function () {
   this.When(/^I click on "([^"]*)" in the list$/, async function (breakingBad) {
     await driver.wait(until.elementLocated(By.css('.lister')));
     let breakingBadShow = await driver.findElement(by.partialLinkText(breakingBad));
-    expect(breakingBadShow).to.exist;
+    expect(breakingBadShow, 'Correct show did not exist. Expected: ' + breakingBad).to.exist;
     await breakingBadShow.click();
     await sleep(sleepTime);
   });
@@ -123,14 +123,14 @@ module.exports = function () {
   this.Then(/^I want to see how many episodes the show has$/, async function () {
     await driver.wait(until.elementLocated(By.css('.bp_content')));
     let amountOfEpisodes = await driver.findElement(By.css('.bp_sub_heading')).getText();
-    expect(amountOfEpisodes).to.include('62');
+    expect(amountOfEpisodes, 'Wrong amount of episodes').to.include('62');
     await sleep(sleepTime);
   });
 
   this.Then(/^a list of the full cast of the show$/, async function () {
     await driver.wait(until.elementLocated(By.css('.main')));
     let breakingBadShow = await driver.findElement(by.partialLinkText('FULL CAST AND CREW'));
-    expect(breakingBadShow).to.exist;
+    expect(breakingBadShow, 'Correct show did not exist').to.exist;
     await breakingBadShow.click();
     await driver.wait(until.elementLocated(By.css('.cast_list')));
     await sleep(sleepTime);
