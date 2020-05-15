@@ -2,7 +2,7 @@ let { $, sleep } = require('./funcs');
 
 module.exports = function () {
 
-  let sleepTime = 3000;
+  let sleepTime = 0;
 
   this.Given(/^that I click the 'Most popular shows' link in the menu$/, async function () {
     await driver.wait(until.elementLocated(By.css('div[role="presentation"]')));
@@ -98,6 +98,41 @@ module.exports = function () {
     await driver.wait(until.elementLocated(By.css('.lister-list')));
     let specificShow = await driver.findElement(by.partialLinkText(talkShow));
     expect(specificShow).to.exist;
+    await sleep(sleepTime);
+  });
+
+  this.Given(/^that I click on 'Top rated Shows'$/, async function () {
+    await driver.wait(until.elementLocated(By.css('div[role="presentation"]')));
+    let ratedShowLink = await driver.findElement(by.partialLinkText('Top Rated Shows'));
+    await ratedShowLink.click();
+    await sleep(sleepTime);
+  });
+
+  this.When(/^I click on "([^"]*)" in the list$/, async function (breakingBad) {
+    await driver.wait(until.elementLocated(By.css('.lister')));
+    let breakingBadShow = await driver.findElement(by.partialLinkText(breakingBad));
+    expect(breakingBadShow).to.exist;
+    await breakingBadShow.click();
+    await sleep(sleepTime);
+  });
+
+  this.When(/^I have been redirected to the page about that show$/, async function () {
+    await driver.wait(until.elementLocated(By.css('.pagecontent')));
+  });
+
+  this.Then(/^I want to see how many episodes the show has$/, async function () {
+    await driver.wait(until.elementLocated(By.css('.bp_content')));
+    let amountOfEpisodes = await driver.findElement(By.css('.bp_sub_heading')).getText();
+    expect(amountOfEpisodes).to.include('62');
+    await sleep(sleepTime);
+  });
+
+  this.Then(/^a list of the full cast of the show$/, async function () {
+    await driver.wait(until.elementLocated(By.css('.main')));
+    let breakingBadShow = await driver.findElement(by.partialLinkText('FULL CAST AND CREW'));
+    expect(breakingBadShow).to.exist;
+    await breakingBadShow.click();
+    await driver.wait(until.elementLocated(By.css('.cast_list')));
     await sleep(sleepTime);
   });
 

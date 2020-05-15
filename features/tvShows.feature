@@ -23,3 +23,10 @@ Feature: TV-shows
     And choose 'Talk Show' for tv-shows I want to see
     Then I should se a list of the most popular talk shows
     And that "A Little Late with Lilly Singh" is one of them
+
+  Scenario: More info about a show
+    Given that I click on 'Top rated Shows'
+    When I click on "Breaking Bad" in the list
+    And I have been redirected to the page about that show
+    Then I want to see how many episodes the show has
+    And a list of the full cast of the show
