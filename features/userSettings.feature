@@ -14,3 +14,12 @@ Feature: User settings
     And I write something in my 'bio'
     And click on 'Save Description'
     Then my bio should display what I just wrote
+
+  Scenario: Change User ID
+    When I click on my name
+    And chose 'Account settings'
+    And I pick 'Edit profile'
+    And I click on 'Edit' next to my name
+    And change my name
+    And click on 'Save Changes'
+    Then my name should have changed

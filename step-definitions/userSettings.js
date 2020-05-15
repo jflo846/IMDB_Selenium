@@ -49,14 +49,23 @@ module.exports = function () {
     await sleep(sleepTime);
   });
 
+  let newBio;
   this.When(/^I write something in my 'bio'$/, async function () {
     await driver.wait(until.elementLocated(By.css('#main')));
     let bioArea = await driver.findElement(By.css('.multiline'));
     expect(bioArea, 'Could not find the bio-textarea').to.exist;
     await bioArea.click();
-    //Reset the bioArea
-    await bioArea.clear();
-    await bioArea.sendKeys('Oh hi Mark!');
+    let bioText = await driver.findElement(By.css('.multiline')).getText();
+    if (bioText === "Hello! Welcome to my Bio") {
+      //Reset the bioArea
+      await bioArea.clear();
+      await bioArea.sendKeys('This is my Bio');
+      newBio = "This is my Bio"
+    } else if (bioText === "This is my Bio") {
+      await bioArea.clear();
+      await bioArea.sendKeys('Hello! Welcome to my Bio');
+      newBio = "Hello! Welcome to my Bio";
+    }
     await sleep(sleepTime);
   });
 
@@ -73,7 +82,44 @@ module.exports = function () {
     await accountLink.click();
     await driver.wait(until.elementLocated(By.css('#main')));
     let updatedBio = await driver.findElement(By.css('.multiline')).getText();
-    expect(updatedBio).to.include('Mark');
+    expect(updatedBio).to.equal(newBio);
+  });
+
+  this.When(/^I click on 'Edit' next to my name$/, async function () {
+    await driver.wait(until.elementLocated(By.css('#main')));
+    let editButton = await driver.findElement(by.partialLinkText('Edit'));
+    await editButton.click();
+    await sleep(sleepTime);
+  });
+
+  let newName;
+  //Tar hand om det här i helgen eller på måndag :) -Ullis
+  this.When(/^change my name$/, async function () {
+    /*let nameInput = await $('input[name="nick"]');
+    await nameInput.click();
+    let currentName1 = await driver.findElement(by.css('input[value = "Tester_Tester"]'));
+    if (currentName1 === true) {
+      await nameInput.clear();
+      newName = await nameInput.sendKeys('Testing_Testing');
+    }
+    //let currentName2 = await driver.findElement(by.css('input[value = "Testing_Testing"]'));
+    if (currentName2 === true) {
+      await nameInput.clear();
+      newName = await nameInput.sendKeys('Tester_Tester');
+    }
+    await sleep(sleepTime);*/
+  });
+
+  this.When(/^click on 'Save Changes'$/, async function () {
+    let saveChangesButton = await $('input[value="Save Changes"]');
+    await saveChangesButton.click();
+    await sleep(sleepTime);
+  });
+
+  this.Then(/^my name should have changed$/, async function () {
+    await driver.wait(until.elementLocated(By.css('.success')));
+    let updatedName = await driver.findElement(By.css('.success > h2 > strong')).getText();
+    expect(updatedName).to.equal(newName);
   });
 
 }
