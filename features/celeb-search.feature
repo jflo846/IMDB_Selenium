@@ -17,5 +17,13 @@
 
 Examples:
 | startYear | endYear | dayAndMonth |
-| 2020      |2020     | 05-20       |
 | 1988      | 1989    | 05-05       |
+| 1965      | 2015    | 08-20       |
+
+Scenario: No results shown
+Given that I am on the page for advanced name search
+And I enter 2020 as startyear and 2020 as endyear
+And 08-08 as day and month for birthdate
+And press the button to search for non born people
+Then I shall se that there are no celebs born on the day I searched for
+And if I klick on the IMDB home button I shall come back to the startpage
