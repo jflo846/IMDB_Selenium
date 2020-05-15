@@ -63,19 +63,19 @@ module.exports = function() {
   this.When(/^I press the 'Most popular movies' link$/, async function () {
     let mostPopularMovies = await driver.wait(until.elementLocated(By.linkText('Most Popular Movies')));
     await mostPopularMovies.click();
-    expect(mostPopularMovies, 'Could not find the link Coming Soon');
+    expect(mostPopularMovies, 'Could not find the link Most Popular Movies').to.exist; 
   });
 
   this.When(/^click on the 'Lowest Rated Movies' to the right$/, async function () {
-    let lowestRated = await driver.findElement(by.linkText('Lowest Rated Movies'));
+    let lowestRated= await driver.wait(until.elementLocated(By.linkText('Lowest Rated Movies')));
     await lowestRated.click();
-    expect(lowestRated).to.exist;
+    expect(lowestRated,'Did not find Lowest Rated Movies').to.exist; 
   });
 
   this.Then(/^I should get a list of the worst (\d+) movies$/, async function (numberOfMovies) {
     let totalNumber = await driver.findElement(by.css('.desc > span:nth-child(1)')).getText();
     expect(totalNumber).to.equal(numberOfMovies, 'theres not the correct number of movies here');
-  });
+  }); 
 
   this.Then(/^The Room with Tommy Wiseau should be on the list$/, async function () {
     let isThisTheWorstMovieEver = await driver.findElement(By.linkText('The Room')).getText();
