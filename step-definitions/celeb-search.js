@@ -47,7 +47,7 @@ module.exports = function () {
   this.Given(/^that I am on the page for advanced name search$/, async function () {
     await helpers.loadPage('https://www.imdb.com/search/name/');
     let adress = await driver.getCurrentUrl();
-    console.log(adress);
+    
     expect(adress).to.equal('https://www.imdb.com/search/name/');
   });
 
@@ -70,7 +70,9 @@ module.exports = function () {
   });
 
   this.Then(/^I shall se that there are no celebs born on the day I searched for$/, async function () {
-    expect(numberOfCelebs,'').to.equal('No');
+    let noResult= await driver.findElement(by.css('#main > div > div > span'));
+    let text= await noResult.getText();
+    expect(text).to.equal('No results.');
   });
 
   this.Then(/^if I klick on the IMDB home button I shall come back to the startpage$/, async function () {
