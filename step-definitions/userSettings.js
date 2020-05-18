@@ -140,23 +140,26 @@ module.exports = function () {
 
   this.When(/^click on 'Edit' next to 'Password'$/, async function () {
     await driver.wait(until.elementLocated(By.css('.a-section')))
-    //Tre knappar med samma sökväg...
+    let changePasswordButton = await $('input[id="auth-cnep-edit-password-button"]');
+    expect(changePasswordButton, 'Could not find correct button').to.exist;
+    await changePasswordButton.click();
+    await sleep(sleepTime);
   });
 
   this.When(/^enter my current password$/, async function () {
-    //input  id=ap_password
+    //input[id="ap_password"]
   });
 
   this.When(/^enter my new password$/, async function () {
-    //input id="ap_password_new"
+    //input[id="ap_password_new"]
   });
 
   this.When(/^reenter my new password$/, async function () {
-    //input id="ap_password_new_check"
+    //input[id="ap_password_new_check"]
   });
 
   this.When(/^click on 'Save changes'$/, async function () {
-    //input class="a-button-input"/ type="submit"
+    //input[class="a-button-input"]/ [type="submit"]
   });
 
   this.Then(/^my password should be updated$/, async function () {
@@ -165,6 +168,10 @@ module.exports = function () {
 
   this.Then(/^I should get the message 'Success You have successfully modified your account'$/, async function () {
     //Meddelandet för success ligger under <div class="a-box-inner a-alert-container">
+  });
+
+  this.Then(/^I should be able to change it back to the original password$/, async function () {
+    //To do
   });
 
 }

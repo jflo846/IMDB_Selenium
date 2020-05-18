@@ -31,3 +31,4 @@ Feature: User settings
     And click on 'Save changes'
     Then my password should be updated
     And I should get the message 'Success You have successfully modified your account'
+    And I should be able to change it back to the original password
