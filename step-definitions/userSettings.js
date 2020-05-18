@@ -93,21 +93,23 @@ module.exports = function () {
   });
 
   let newName;
-  //Tar hand om det här i helgen eller på måndag :) -Ullis
   this.When(/^change my name$/, async function () {
-    /*let nameInput = await $('input[name="nick"]');
+    await driver.wait(until.elementLocated(By.css('.auth-input-title')));
+    let nameInput = await $('input[name="nick"]');
     await nameInput.click();
-    let currentName1 = await driver.findElement(by.css('input[value = "Tester_Tester"]'));
-    if (currentName1 === true) {
-      await nameInput.clear();
-      newName = await nameInput.sendKeys('Testing_Testing');
+    if (await driver.findElement(By.css('input[value^="Test"]'))) {
+      if (await $('input[value$="er"]')) {
+        await nameInput.clear();
+        await nameInput.sendKeys('Testing_Testing');
+        newName = 'Testing_Testing';
+      }
+      if (await $('input[value$="ing"]')) {
+        await nameInput.clear();
+        await nameInput.sendKeys('Tester_Tester');
+        newName = 'Tester_Tester';
+      }
     }
-    //let currentName2 = await driver.findElement(by.css('input[value = "Testing_Testing"]'));
-    if (currentName2 === true) {
-      await nameInput.clear();
-      newName = await nameInput.sendKeys('Tester_Tester');
-    }
-    await sleep(sleepTime);*/
+    await sleep(sleepTime);
   });
 
   this.When(/^click on 'Save Changes'$/, async function () {
