@@ -3,7 +3,7 @@ const { username, password } = require('./credentials.json');
 
 module.exports = function () {
 
-  let sleepTime = 0;
+  let sleepTime = 5000;
 
   this.Given(/^that I am have signed in to my account$/, async function () {
     await helpers.loadPage('https://www.imdb.com/ap/signin?openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.imdb.com%2Fregistration%2Fap-signin-handler%2Fimdb_us&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=imdb_us&openid.mode=checkid_setup&siteState=eyJvcGVuaWQuYXNzb2NfaGFuZGxlIjoiaW1kYl91cyIsInJlZGlyZWN0VG8iOiJodHRwczovL3d3dy5pbWRiLmNvbS8_cmVmXz1sb2dpbiJ9&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&tag=imdbtag_reg-20');
@@ -129,6 +129,12 @@ module.exports = function () {
     expect(updatedName).to.equal(newName);
   });
 
+  //Nytt scenario
+  let currentPassword;
+  let newPassword;
+  let newCheckPassword;
+  let savePasswordButton;
+  let changePasswordButton;
 
   this.When(/^click on 'Login and security'$/, async function () {
     await driver.wait(until.elementLocated(By.css('.article')));
@@ -140,38 +146,64 @@ module.exports = function () {
 
   this.When(/^click on 'Edit' next to 'Password'$/, async function () {
     await driver.wait(until.elementLocated(By.css('.a-section')))
-    let changePasswordButton = await $('input[id="auth-cnep-edit-password-button"]');
+    changePasswordButton = await $('input[id="auth-cnep-edit-password-button"]');
     expect(changePasswordButton, 'Could not find correct button').to.exist;
     await changePasswordButton.click();
     await sleep(sleepTime);
   });
 
   this.When(/^enter my current password$/, async function () {
-    //input[id="ap_password"]
+    await driver.wait(until.elementLocated(By.css('.a-box-inner')));
+    currentPassword = await $('input[id="ap_password"]');
+    expect(currentPassword, 'Could not find the correct input field').to.exist;
+    await currentPassword.sendKeys('Hello123');
+    await sleep(sleepTime);
   });
 
   this.When(/^enter my new password$/, async function () {
-    //input[id="ap_password_new"]
+    newPassword = await $('input[id="ap_password_new"]');
+    expect(newPassword, 'Could not find the correct input field').to.exist;
+    await newPassword.sendKeys('Hello321');
+    await sleep(sleepTime);
   });
 
   this.When(/^reenter my new password$/, async function () {
-    //input[id="ap_password_new_check"]
+    newCheckPassword = await $('input[id="ap_password_new_check"]');
+    expect(newCheckPassword, 'Could not find the correct input field').to.exist;
+    await newCheckPassword.sendKeys('Hello321');
+    await sleep(sleepTime);
   });
 
   this.When(/^click on 'Save changes'$/, async function () {
-    //input[class="a-button-input"]/ [type="submit"]
+    savePasswordButton = await $('input[id="cnep_1D_submit_button"]');
+    expect(savePasswordButton, 'Could not find the correct button').to.exist;
+    await savePasswordButton.click();
+    await sleep(sleepTime);
   });
 
   this.Then(/^my password should be updated$/, async function () {
     //Testas i nästa steg 
   });
 
-  this.Then(/^I should get the message 'Success You have successfully modified your account'$/, async function () {
-    //Meddelandet för success ligger under <div class="a-box-inner a-alert-container">
+  this.Then(/^I should get the message 'Success You have successfully modified your account!'$/, async function () {
+    await driver.wait(until.elementLocated(By.css('.a-alert-heading')));
+    let successMessage = await driver.findElement(By.css('#auth-success-message-box')).getText();
+    expect(successMessage).to.include('Success');
+    await sleep(sleepTime);
   });
 
   this.Then(/^I should be able to change it back to the original password$/, async function () {
-    //To do
+    changePasswordButton = await $('input[id="auth-cnep-edit-password-button"]');
+    await changePasswordButton.click();
+    currentPassword = await $('input[id="ap_password"]');
+    await currentPassword.sendKeys('Hello321');
+    newPassword = await $('input[id="ap_password_new"]');
+    await newPassword.sendKeys('Hello123');
+    newCheckPassword = await $('input[id="ap_password_new_check"]');
+    await newCheckPassword.sendKeys('Hello123');
+    savePasswordButton = await $('input[id="cnep_1D_submit_button"]');
+    await savePasswordButton.click();
+    await sleep(sleepTime);
   });
 
 }
