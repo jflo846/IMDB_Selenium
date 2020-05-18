@@ -106,16 +106,20 @@ module.exports = function () {
     await sleep(sleepTime);
   });
 
-  this.When(/pick Music/, async function () {
+  this.When(/pick Music and Family/, async function () {
     let musicCheckBox = await driver.findElement(by.css('div.faceter-fieldset.genres > fieldset > span:nth-child(10)'));
     await musicCheckBox.click();
+    let element=await driver.wait(until.elementLocated(by.css('.header')));
+    await driver.wait(until.elementTextContains(element, 'Music'));
+    let familyCheckBox = await driver.findElement(by.css('div.faceter-fieldset.genres > fieldset > span:nth-child(8)'));
+    await familyCheckBox.click();
     await sleep(sleepTime);
   });
 
-  this.Then(/^I expect to find 'Happy Feet' among the search results$/, async function () {
+  this.Then(/^I expect to find 'Jackie & Ryan' among the search results$/, async function () {
     let element=await driver.wait(until.elementLocated(by.css('.header')));
-    await driver.wait(until.elementTextContains(element, 'Music'));
-    let movieList=await driver.findElement(by.partialLinkText('Happy'));
+    await driver.wait(until.elementTextContains(element, 'Family'));
+    let movieList=await driver.findElement(by.partialLinkText('Ryan'));
     expect(movieList).to.exist;
   });
 }

@@ -27,5 +27,5 @@ Feature: Picky consumer
     Given that I choose 'Keywords' in the searchbar drop-down menu
     And write "f-rated" in the searchfield, I should see different search result, among them f-rated which I click
     When I select the topic Genres
-    And pick Music
-    Then I expect to find 'Happy Feet' among the search results
+    And pick Music and Family
+    Then I expect to find 'Jackie & Ryan' among the search results
