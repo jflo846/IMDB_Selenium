@@ -3,13 +3,15 @@ const { username, password } = require('./credentials.json');
 
 module.exports = function () {
 
-  let sleepTime = 3000;
+  let sleepTime = 0;
 
   this.Given(/^that I am have signed in to my account$/, async function () {
     await helpers.loadPage('https://www.imdb.com/ap/signin?openid.pape.max_auth_age=0&openid.return_to=https%3A%2F%2Fwww.imdb.com%2Fregistration%2Fap-signin-handler%2Fimdb_us&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=imdb_us&openid.mode=checkid_setup&siteState=eyJvcGVuaWQuYXNzb2NfaGFuZGxlIjoiaW1kYl91cyIsInJlZGlyZWN0VG8iOiJodHRwczovL3d3dy5pbWRiLmNvbS8_cmVmXz1sb2dpbiJ9&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&tag=imdbtag_reg-20');
     let emailInput = await $('input[type= "email"]');
+    emailInput.clear();
     emailInput.sendKeys(username);
     let passwordInput = await $('input[type= "password"]');
+    passwordInput.clear();
     passwordInput.sendKeys(password);
     let signInIMBDButton = await driver.findElement(By.css('input[id="signInSubmit"]'));
     await signInIMBDButton.click();
@@ -79,6 +81,7 @@ module.exports = function () {
   this.Then(/^my bio should display what I just wrote$/, async function () {
     await driver.wait(until.elementLocated(By.partialLinkText('Edit profile')));
     let accountLink = await driver.findElement(by.partialLinkText('Edit profile'));
+    expect(accountLink, 'Could not find correct link').to.exist;
     await accountLink.click();
     await driver.wait(until.elementLocated(By.css('#main')));
     let updatedBio = await driver.findElement(By.css('.multiline')).getText();
@@ -88,6 +91,7 @@ module.exports = function () {
   this.When(/^I click on 'Edit' next to my name$/, async function () {
     await driver.wait(until.elementLocated(By.css('#main')));
     let editButton = await driver.findElement(by.partialLinkText('Edit'));
+    expect(editButton, 'Could not find correct button').to.exist;
     await editButton.click();
     await sleep(sleepTime);
   });
@@ -114,6 +118,7 @@ module.exports = function () {
 
   this.When(/^click on 'Save Changes'$/, async function () {
     let saveChangesButton = await $('input[value="Save Changes"]');
+    expect(saveChangesButton, 'Could not find correct button').to.exist;
     await saveChangesButton.click();
     await sleep(sleepTime);
   });
@@ -122,6 +127,44 @@ module.exports = function () {
     await driver.wait(until.elementLocated(By.css('.success')));
     let updatedName = await driver.findElement(By.css('.success > h2 > strong')).getText();
     expect(updatedName).to.equal(newName);
+  });
+
+
+  this.When(/^click on 'Login and security'$/, async function () {
+    await driver.wait(until.elementLocated(By.css('.article')));
+    let securityLink = await driver.findElement(by.partialLinkText('Login and security'));
+    expect(securityLink, 'Correct link does not exist').to.exist;
+    await securityLink.click();
+    await sleep(sleepTime);
+  });
+
+  this.When(/^click on 'Edit' next to 'Password'$/, async function () {
+    await driver.wait(until.elementLocated(By.css('.a-section')))
+    //Tre knappar med samma sökväg...
+  });
+
+  this.When(/^enter my current password$/, async function () {
+    //input  id=ap_password
+  });
+
+  this.When(/^enter my new password$/, async function () {
+    //input id="ap_password_new"
+  });
+
+  this.When(/^reenter my new password$/, async function () {
+    //input id="ap_password_new_check"
+  });
+
+  this.When(/^click on 'Save changes'$/, async function () {
+    //input class="a-button-input"/ type="submit"
+  });
+
+  this.Then(/^my password should be updated$/, async function () {
+    //Testas i nästa steg 
+  });
+
+  this.Then(/^I should get the message 'Success You have successfully modified your account'$/, async function () {
+    //Meddelandet för success ligger under <div class="a-box-inner a-alert-container">
   });
 
 }

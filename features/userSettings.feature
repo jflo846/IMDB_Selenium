@@ -6,20 +6,28 @@ Feature: User settings
   Background: Logged in
     Given that I am have signed in to my account
     And I am on the frontpage
-
-  Scenario: Edit bio
     When I click on my name
     And chose 'Account settings'
-    And I pick 'Edit profile'
+
+  Scenario: Edit bio
+    When I pick 'Edit profile'
     And I write something in my 'bio'
     And click on 'Save Description'
     Then my bio should display what I just wrote
 
   Scenario: Change User ID
-    When I click on my name
-    And chose 'Account settings'
-    And I pick 'Edit profile'
+    When I pick 'Edit profile'
     And I click on 'Edit' next to my name
     And change my name
     And click on 'Save Changes'
     Then my name should have changed
+
+  Scenario: Change password
+    When click on 'Login and security'
+    And click on 'Edit' next to 'Password'
+    And enter my current password
+    And enter my new password
+    And reenter my new password
+    And click on 'Save changes'
+    Then my password should be updated
+    And I should get the message 'Success You have successfully modified your account'
