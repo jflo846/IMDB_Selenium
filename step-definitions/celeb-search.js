@@ -9,24 +9,29 @@ module.exports = function () {
   this.Given(/^that I clicked on the link for advanced name search$/, async function () {
     let advancedName = await driver.findElement(By.linkText('Advanced Name Search'));
     await advancedName.click();
+    expect(advancedName).to.exist;
    
   });
   this.When(/^I enter (\d+) and (\d+) in the birthdate box$/, async function (startYear, endYear) {
     let birthDateStart = await driver.wait(until.elementLocated(By.name('birth_date-min')));
     await birthDateStart.sendKeys(startYear);
+    expect(birthDateStart).to.exist;
     
     let birthDateEnd = await driver.wait(until.elementLocated(By.name('birth_date-max')));
     await birthDateEnd.sendKeys(endYear);
+    expect(birthDateEnd).to.exist;
   });
 
   this.When(/^I enter (\d+)\-(\d+) in the birthday box$/, async function (day, month) {
     let birthDayAndMonth = await driver.findElement(By.name('birth_monthday'));
-    await birthDayAndMonth.sendKeys(day,'-',month);
+    await birthDayAndMonth.sendKeys(day, '-', month);
+    expect(birthDayAndMonth).to.exist;
   });
 
   this.When(/^I click on the yellow search button on the bottom of the page$/, async function () {
     let searchButton = await $('.primary');
     await searchButton.click();
+    expect(searchButton).to.exist;
   });
 
   this.Then(/^I should get a list of the celebs that where born on that day$/, async function () {
