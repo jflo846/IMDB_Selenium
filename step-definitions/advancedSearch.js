@@ -4,6 +4,7 @@ module.exports = function () {
 
   let sleepTime = 0;
   let resultLinks;
+  let movieList=[];
 
   this.Given(/^I have pressed the All\-button to extend all search options availible$/, async function () {
     let allButton = await $('label.ipc-button:nth-child(1) > div:nth-child(1)')
@@ -98,42 +99,23 @@ module.exports = function () {
     await sleep(sleepTime);
   });
 
-
-  this.When(/^I select the topic "([^"]*)"$/, async function (genres) {
-    await driver.wait(until.elementLocated(by.css('.faceter-category')));
-    let toClick = await driver.findElements(by.xpath("//*[text()[contains(., 'Genres')]]"));
-    toClick[0].click();
+  this.When(/^I select the topic Genres$/, async function () {
+    await driver.wait(until.elementLocated(by.css('div.faceter.nojs-hidden.open > div.faceter-content')));
+    let toClick=await driver.findElements(by.css('.faceter-category'));
+    await toClick[1].click();    
     await sleep(sleepTime);
   });
 
-  this.When(/pick "([^"]*)" and "([^"]*)"$/, async function (music, family) {
-    await driver.wait(until.elementLocated(by.css('.faceter-facet-text')));
-    let category = await driver.findElemets(By.css('.faceter-facet-text'));
-    expect(category, 'Could not find the class faceter-facet-text').to.exist;
-
-    //TODO lös så jag kan ha två checkboxar valda... Frågat Thomas
-
-    let familyCheckBox = await driver.findElement(by.css('input[name="Family"]'));
-    await familyCheckBox.click();
-    // let head=await driver.wait(until.elementLocated(by.css('.h1.header')));
-    //console.log(head.getText())
-
-    //await driver.wait(until.ExpectedConditions.invisibilityOf(toDisapear));
-    //  let musicCheckBox= await driver.findElement(by.css('input[name="Family"]'));
-    //await musicCheckBox.click();
+  this.When(/pick Music/, async function () {
+    let musicCheckBox = await driver.findElement(by.css('div.faceter-fieldset.genres > fieldset > span:nth-child(10)'));
+    await musicCheckBox.click();
+    await sleep(sleepTime);
   });
 
-
-  this.Then(/^I expect to find "([^"]*)" among the search results$/, async function (happyFeet) {
-
-    let wantedFilm = await driver.findElement(by.css('.lister-item-header'));
-    let wantedFilmList = await wantedFilm.getText();
-
-    for (let wanted of wantedFilmList) {
-      if (wanted !== happyFeet) { continue; }
-      expect(wantedFilmList).to.include(happyFeet);
-    }
-
+  this.Then(/^I expect to find 'Happy Feet' among the search results$/, async function () {
+    let element=await driver.wait(until.elementLocated(by.css('.header')));
+    await driver.wait(until.elementTextContains(element, 'Music'));
+    let movieList=await driver.findElement(by.partialLinkText('Happy'));
+    expect(movieList).to.exist;
   });
-
 }
