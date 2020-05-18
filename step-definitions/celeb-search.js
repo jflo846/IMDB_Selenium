@@ -1,11 +1,11 @@
 let { $, sleep } = require('./funcs');
 
 module.exports = function () {
-  let sleepTime=0;
+  let sleepTime = 0;
 
   let numberOfCelebs;
   let nameToCheck;
- 
+
   this.Given(/^that I clicked on the link for advanced name search$/, async function () {
     let advancedName = await driver.findElement(By.linkText('Advanced Name Search'));
     await advancedName.click();
@@ -49,20 +49,20 @@ module.exports = function () {
     nameToCheck = await celebsBornThisDay.getText();
     await celebsBornThisDay.click();
     await sleep(sleepTime);
-    
+
     let personalPageName = await driver.wait(until.elementLocated(By.css('h1.header > span:nth-child(1)'))).getText();
     expect(nameToCheck).to.equal(personalPageName, 'This is not the right page');
     await sleep(sleepTime);
   });
 
-  this.Given(/^that I am on the page for advanced name search$/, async function () {
+  this.Given(/^that I am on the page for 'Advanced Name Search'$/, async function () {
     await helpers.loadPage('https://www.imdb.com/search/name/');
     let adress = await driver.getCurrentUrl();
     expect(adress, 'This is not the page for advanced name search').to.equal('https://www.imdb.com/search/name/');
     await sleep(sleepTime);
   });
 
-  this.Given(/^I enter (\d+) as startyear and (\d+) as endyear$/,async function (yearOne, yearTwo) {
+  this.Given(/^I enter (\d+) as startyear and (\d+) as endyear$/, async function (yearOne, yearTwo) {
     let birthDateStart = await driver.wait(until.elementLocated(By.name('birth_date-min')));
     await birthDateStart.sendKeys(yearOne);
     await sleep(sleepTime);
@@ -72,26 +72,26 @@ module.exports = function () {
     await sleep(sleepTime);
   });
 
-  this.Given(/^(\d+)\-(\d+) as day and month for birthdate$/,async function (day, month) {
+  this.Given(/^(\d+)\-(\d+) as day and month for birth date$/, async function (day, month) {
     let birthDayAndMonth = await driver.findElement(By.name('birth_monthday'));
     await birthDayAndMonth.sendKeys(day, '-', month);
     await sleep(sleepTime);
   });
 
-  this.Given(/^press the button to search for non born people$/,async function () {
+  this.Given(/^press the button to search for people who are not yet born$/, async function () {
     let searchButton = await $('.primary');
     await searchButton.click();
     await sleep(sleepTime);
   });
 
-  this.Then(/^I shall se that there are no celebs born on the day I searched for$/, async function () {
-    let noResult= await driver.findElement(by.css('#main > div > div > span'));
-    let text= await noResult.getText();
-    expect(text, 'There should be no results').to.equal('No results.');
+  this.Then(/^I shall see that there are no celebrities born on the day I searched for$/, async function () {
+    let noResult = await driver.findElement(by.css('#main > div > div > span'));
+    let text = await noResult.getText();
+    expect(text, 'There should not be any results').to.equal('No results.');
     await sleep(sleepTime);
   });
 
-  this.Then(/^if I klick on the IMDB home button I shall come back to the startpage$/, async function () {
+  this.Then(/^if I click on the IMDB home button I shall come back to the startpage$/, async function () {
     await driver.findElement(by.id('home_img_holder')).click();
     let startPage = await driver.getCurrentUrl();
     expect(startPage, 'This is not the homepage').to.equal('https://www.imdb.com/?ref_=nv_home');
