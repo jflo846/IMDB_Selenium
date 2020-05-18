@@ -2,12 +2,14 @@ let { $, sleep } = require('./funcs');
 
 module.exports = function () {
 
-    let sleepTime=3000;
-let searchText;
+  let sleepTime=0;
+  let searchText;
+  
     this.Given(/^that I write "([^"]*)" in the search field$/, async function (independent) {
     searchText = await $('input[placeholder= "Search IMDb"]');
     expect(searchText).to.exist;
     searchText.sendKeys(independent);
+    await sleep(sleepTime);
   });
 
   this.Given(/^use arrow to getdown two steps and select the suggestion Independent Spirit Awards with enter$/, async function () {
@@ -16,6 +18,7 @@ let searchText;
     expect(searchReady).to.exist;   
     await searchReady.sendKeys(selenium.Key.ARROW_DOWN);
     await searchReady.sendKeys(selenium.Key.ENTER);
+    await sleep(sleepTime);
   });
 
   this.Then(/^a search result shall include the category "([^"]*)"$/, async function (bestFemaleLead) { 
@@ -35,6 +38,7 @@ let searchText;
     expect(search, 'Did not find the category ' + bestFemaleLead).to.be.true; 
    
     await driver.wait(until.elementLocated(by.css('img[alt="Renée Zellweger"]')));
+    await sleep(sleepTime);
   });
 
   this.When(/^clicking the picture on the winner "([^"]*)" I expect to be directed to her site$/, async function (winner) { 
