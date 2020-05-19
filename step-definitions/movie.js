@@ -23,7 +23,6 @@ module.exports = function() {
   });
 
   this.Then(/^the list should be empty because the theaters are closed$/,async function () {
-    //jag tänker att en "tom" sida som vi förväntar oss har classen thebuzz och saknar klassen för posters
     expect(thebuzz, 'Missed information on the site: Check back soon for updated movie listings.').to.exist;
     expect(posterShadowed, 'There were posters on movies').to.not.exist;
     await sleep(sleepTime);
@@ -45,7 +44,6 @@ module.exports = function() {
   });
 
   this.Then(/^The "([^"]*)" should be number one$/, async function (expectedNbrOne) {
-    //TODO Behöver få ordning på firefox så den kör engelska jämt, av något skäl byter den tillbaks till svenska
     let toFind = topRatedNodeList[0]
     let movieTitle = await toFind.getText();
     expect(movieTitle).to.include(expectedNbrOne,

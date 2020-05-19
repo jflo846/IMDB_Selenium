@@ -103,6 +103,7 @@ module.exports = function () {
     await sleep(sleepTime);
     await driver.wait(until.elementLocated(by.css('.result_text')));
     let linkToClick = await driver.findElement(By.linkText('f-rated'));
+    expect(linkToClick,'No such link' + fRated).to.exist;
     await linkToClick.click();
     await sleep(sleepTime);
   });
@@ -118,7 +119,8 @@ module.exports = function () {
     let musicCheckBox = await driver.findElement(by.css('div.faceter-fieldset.genres > fieldset > span:nth-child(10)'));
     await musicCheckBox.click();
     let element=await driver.wait(until.elementLocated(by.css('.header')));
-    await driver.wait(until.elementTextContains(element, 'Music'));
+    let el=await driver.wait(until.elementTextContains(element, 'Music')).getText();
+    expect(el, 'The header did not include the selected topic Music').to.include("Music");
     let familyCheckBox = await driver.findElement(by.css('div.faceter-fieldset.genres > fieldset > span:nth-child(8)'));
     await familyCheckBox.click();
     await sleep(sleepTime);
