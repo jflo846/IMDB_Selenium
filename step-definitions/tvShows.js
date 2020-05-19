@@ -2,12 +2,13 @@ let { $, sleep } = require('./funcs');
 
 module.exports = function () {
 
-  let sleepTime = 0;
+  let sleepTime = 2000;
 
   this.Given(/^that I click the 'Most popular shows' link in the menu$/, async function () {
     await driver.wait(until.elementLocated(By.css('div[role="presentation"]')));
     let link = await driver.findElement(by.partialLinkText('Most Popular Shows'));
     await link.click();
+    await sleep(sleepTime);
   });
 
   this.When(/^I choose to sort by IMDB rating$/, async function () {
@@ -19,6 +20,7 @@ module.exports = function () {
     //IMDB rating
     let dropDownChoice = await driver.findElement(By.css('option[value="ir:descending"]'));
     await dropDownChoice.click();
+    await sleep(sleepTime);
   });
 
   this.Then(/^I should be able to se the (\d+) most popular tv shows$/, async function (topShows) {
@@ -26,6 +28,7 @@ module.exports = function () {
     let numberOfShows = await $('.desc');
     let numberOfShowsText = await numberOfShows.getText();
     expect(numberOfShowsText).to.include(+topShows, 'Wrong amount of movies');
+    await sleep(sleepTime);
   });
 
   this.Then(/^I expect "([^"]*)" to be one of them$/, async function (gameOfThrones) {
@@ -33,6 +36,7 @@ module.exports = function () {
     let popularShows = await $('.lister')
     let popularShowsText = await popularShows.getText();
     expect(popularShowsText).to.include(gameOfThrones, 'Correct show was not included')
+    await sleep(sleepTime);
   });
 
   this.Given(/^that I click the 'Top Rated Shows' link in the menu$/, async function () {
@@ -49,7 +53,8 @@ module.exports = function () {
     let dropDownChoice = await driver.findElement(By.css('option[value="us:descending"]'));
     await dropDownChoice.click();
     let descendingOrder = await driver.findElement(By.css(('[title^="Descending order"]')));
-    descendingOrder.click();
+    await descendingOrder.click();
+    await sleep(sleepTime);
   });
 
   this.Then(/^I should see the oldest tv\-show "([^"]*)" on the list$/, async function (numberOne) {
@@ -60,16 +65,13 @@ module.exports = function () {
     let elements = await driver.findElements(By.css(".titleColumn > span"));
     let years = [];
     for (let element of elements) {
-      // getting the year part using splits on parenthesis
-      // and converting to number using +
       years.push(+(await element.getText()).split('(')[1].split(')')[0]);
     }
-    // we expect no year to be less than the first year
     let wrongYears = years.filter(x => x < years[0]);
     expect(wrongYears,
       'Years before ' + years[0] + ' found later in list.'
     ).to.be.empty;
-
+    await sleep(sleepTime);
   });
 
   this.Given(/^that I click the 'Browse TV Shows by Genre' link in the menu$/, async function () {
