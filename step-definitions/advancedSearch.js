@@ -4,11 +4,11 @@ module.exports = function () {
 
   let sleepTime = 0;
   let resultLinks;
-  let movieList=[];
 
   this.Given(/^I have pressed the All\-button to extend all search options availible$/, async function () {
     let allButton = await $('label.ipc-button:nth-child(1) > div:nth-child(1)')
     allButton.click();
+    expect(allButton,'The menu does not exist').to.exist;
     await sleep(sleepTime);
   });
 
@@ -27,16 +27,22 @@ module.exports = function () {
   this.When(/^I choose 'Animation' under the headline 'Genres'$/, async function () {
     let checkBox = await driver.findElement(By.id('genres-3'));
     checkBox.click();
+    expect(checkBox, 'The checkbox does not exist').to.exist;
+    await sleep(sleepTime);
   });
 
   this.When(/^'Japan' within 'Countries'$/, async function () {
     let countryCheckBox = await driver.findElement(By.css('.countries > option:nth-child(117)'));
     countryCheckBox.click();
+    expect(countryCheckBox, 'The inputfield does not exist').to.exist;
+    await sleep(sleepTime);
   });
 
   this.When(/^pick 'Japanese' within 'Languages'$/, async function () {
     let languageCheckBox = await driver.findElement(By.css('.languages > option:nth-child(124)'));
     languageCheckBox.click();
+    expect(languageCheckBox, 'The inputfield does not exist').to.exist;
+    await sleep(sleepTime);
   });
 
   this.When(/^I click the search button on the bottom of the page$/, async function () {
@@ -48,7 +54,8 @@ module.exports = function () {
   this.Then(/^I expect to find 'Spirited Away' in the results$/, async function () {
     await driver.wait(until.elementLocated(by.css('.lister-item-content')));
     let searchResult = await driver.findElement(By.linkText('Spirited Away')).getText();
-    expect(searchResult).to.equal('Spirited Away');
+    expect(searchResult).to.equal('Spirited Away','The movie is not on the list');
+    await sleep(sleepTime);
   });
 
   this.Given(/^that I choose 'Keywords' in the searchbar drop\-down menu$/, async function () {
@@ -67,6 +74,7 @@ module.exports = function () {
     let searchButton = await $('#suggestion-search-button');
     assert(searchButton, 'There is no search-button');
     await searchButton.click();
+    await sleep(sleepTime);
   });
 
   this.Then(/^I should get searchresults including 'film\-noir'$/, async function () {
@@ -121,5 +129,6 @@ module.exports = function () {
     await driver.wait(until.elementTextContains(element, 'Family'));
     let movieList=await driver.findElement(by.partialLinkText('Ryan'));
     expect(movieList).to.exist;
+    await sleep(sleepTime);
   });
 }
