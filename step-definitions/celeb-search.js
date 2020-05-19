@@ -2,7 +2,6 @@ let { $, sleep } = require('./funcs');
 
 module.exports = function () {
   let sleepTime = 0;
-
   let numberOfCelebs;
   let nameToCheck;
 
@@ -40,7 +39,7 @@ module.exports = function () {
   this.Then(/^I should get a list of the celebs that where born on that day$/, async function () {
     let results = await driver.wait(until.elementLocated(by.css('div.desc:nth-child(3) > span:nth-child(1)'))).getText();
     numberOfCelebs = await results.slice(0, 2);
-    expect(+numberOfCelebs, 'The list should show max 50 persons').to.not.be.above(50);
+    expect(+numberOfCelebs).to.not.be.above(50, 'The list should show max 50 persons');
     await sleep(sleepTime);
   });
 
@@ -58,7 +57,7 @@ module.exports = function () {
   this.Given(/^that I am on the page for 'Advanced Name Search'$/, async function () {
     await helpers.loadPage('https://www.imdb.com/search/name/');
     let adress = await driver.getCurrentUrl();
-    expect(adress, 'This is not the page for advanced name search').to.equal('https://www.imdb.com/search/name/');
+    expect(adress).to.equal('https://www.imdb.com/search/name/', 'This is not the page for advanced name search');
     await sleep(sleepTime);
   });
 
@@ -87,14 +86,14 @@ module.exports = function () {
   this.Then(/^I shall see that there are no celebrities born on the day I searched for$/, async function () {
     let noResult = await driver.findElement(by.css('#main > div > div > span'));
     let text = await noResult.getText();
-    expect(text, 'There should not be any results').to.equal('No results.');
+    expect(text).to.equal('No results.', 'There should not be any results');
     await sleep(sleepTime);
   });
 
   this.Then(/^if I click on the IMDB home button I shall come back to the startpage$/, async function () {
     await driver.findElement(by.id('home_img_holder')).click();
     let startPage = await driver.getCurrentUrl();
-    expect(startPage, 'This is not the homepage').to.equal('https://www.imdb.com/?ref_=nv_home');
+    expect(startPage).to.equal('https://www.imdb.com/?ref_=nv_home', 'This is not the homepage');
     await sleep(sleepTime);
   });
 }
