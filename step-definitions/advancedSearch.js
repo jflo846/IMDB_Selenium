@@ -128,7 +128,7 @@ module.exports = function () {
     let element=await driver.wait(until.elementLocated(by.css('.header')));
     await driver.wait(until.elementTextContains(element, 'Family'));
     let movieList=await driver.findElement(by.partialLinkText('Ryan'));
-    expect(movieList).to.exist;
+    expect(movieList, 'Did not find the expected movie Jackie & Ryan').to.exist;
     await sleep(sleepTime);
   });
 }

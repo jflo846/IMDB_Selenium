@@ -22,7 +22,7 @@ module.exports = function() {
     await sleep(sleepTime);
   });
 
-  this.Then(/^the list should be empty because the theaters are closed$/, function () {
+  this.Then(/^the list should be empty because the theaters are closed$/,async function () {
     //jag tänker att en "tom" sida som vi förväntar oss har classen thebuzz och saknar klassen för posters
     expect(thebuzz, 'Missed information on the site: Check back soon for updated movie listings.').to.exist;
     expect(posterShadowed, 'There were posters on movies').to.not.exist;
