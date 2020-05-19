@@ -32,7 +32,7 @@ module.exports = function () {
 
   this.Then(/^since I love Chris Hemsworth I want to make sure he is on the list$/, async function () {
     celebs = await driver.findElement(By.linkText('Chris Hemsworth')).getText();
-    expect(celebs).to.equal('Chris Hemsworth');
+    expect(celebs).to.equal('Chris Hemsworth','The actor is not on the most popular list');
     await sleep(sleepTime);
   });
 
