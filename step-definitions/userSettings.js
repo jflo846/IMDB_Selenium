@@ -113,6 +113,9 @@ module.exports = function () {
         await nameInput.sendKeys('Tester_Tester');
         newName = 'Tester_Tester';
       }
+      else {
+        throw (new Error('Name is not correct'));
+      }
     }
     await sleep(sleepTime);
   });
